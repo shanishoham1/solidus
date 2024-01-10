@@ -11,8 +11,14 @@ class SolidusAdmin::UI::Table::RansackFilter::Component < SolidusAdmin::BaseComp
   # @param form [String] The form in which the filter resides.
   def initialize(
     presentation:,
-    combinator:, attribute:, predicate:, options:, form:, index:, search_param: :q
-)
+    combinator:,
+    attribute:,
+    predicate:,
+    options:,
+    form:,
+    index:,
+    search_param: :q
+  )
     @presentation = presentation
     @group = "#{search_param}[g][#{index}]"
     @combinator = build(:combinator, combinator)

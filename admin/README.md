@@ -1,6 +1,53 @@
-# solidus_admin (WIP)
+# Solidus Admin
 
 A Rails engine that provides an administrative interface to the Solidus ecommerce platform.
+
+## Overview
+
+- Based on ViewComponent and TailwindCSS
+- Uses StimulusJS and Turbo for interactivity
+- Works as a separate engine with its own routes
+- Uses the same models as the main Solidus engine
+- Has its own set of controllers
+
+## Installation
+
+Install `solidus_admin` by adding it to your Gemfile and running the installer generator
+
+```bash
+bundle add solidus_admin
+bin/rails g solidus_admin:install
+```
+
+If you're using an authentication system other than `solidus_auth_devise` you'll need to manually configure authentication methods (see api documentation for `SolidusAdmin::Configuration`).
+
+### Components
+
+See [docs/contributing/components.md](docs/components.md) for more information about components.
+
+### Using it alongside `solidus_backend`
+
+`solidus_backend` is the official admin interface for Solidus while `SolidusAdmin` is still in the works and not completed. `SolidusAdmin` acts as a drop-in replacement for `solidus_backend` and over time it will cover more and more of the existing functionality.
+
+Meanwhile it is possible to use both `solidus_backend` and `SolidusAdmin` in the same application by mounting the
+`SolidusAdmin` engine before `Spree::Core::Engine`.
+
+By using a route `constraint` it is possible to shadow any of the routes from `solidus_backend` with the ones from `SolidusAdmin`.
+
+By default the `SolidusAdmin` routes will be disabled if a cookie named `solidus_admin` contains the value `false` or if a query parameter named `solidus_admin` contains the value `false`. This allows to easily switch between the two admin interfaces.
+
+The constraint is installed in the host application routes file and thus it is possible to override it or to add more complex logic to it.
+
+```ruby
+# config/routes.rb
+mount SolidusAdmin::Engine, at: '/admin', constraints: ->(req) {
+  $redis.get('solidus_admin') == 'true' # or any other logic
+}
+```
+
+### Authentication & Authorization
+
+- Delegates authentication to `solidus_backend` and relies on `solidus_core` for authorization
 
 ## Development
 
