@@ -4,6 +4,9 @@ source 'https://rubygems.org'
 
 gemspec require: false
 
+# This should be the first gem listed, so that appmap is loaded first
+gem 'appmap', group: %i[test development]
+
 # rubocop:disable Bundler/DuplicatedGem
 if /(stable|main)/.match? ENV['RAILS_VERSION']
   gem 'rails', github: 'rails', require: false, branch: ENV['RAILS_VERSION']
